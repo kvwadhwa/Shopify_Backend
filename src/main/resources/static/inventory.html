@@ -1,0 +1,112 @@
+<html>
+<head>
+    <title>Inventory Console</title>
+</head>
+<body>
+
+<h3>Create/Update Inventory</h3>
+<form>
+    <h4>Inventory Id</h4>
+    <input type="text" id="inventoryId"/>
+    <h4>Item Name</h4>
+    <input type="text" id="itemName"/>
+    <h4>Item Quantity</h4>
+    <input type="text" id="itemQuantity"/>
+    <h4>Warehouse Id</h4>
+    <input type="text" id="warehouseId"/>
+    <br/><br/>
+    <input type="button" id="createButton" value="Create Inventory"/>
+    <input type="button" id="updateButton" value="Update Inventory"/>
+</form>
+<hr/>
+
+<h3>Get/Delete Inventory</h3>
+<form>
+    <h4>Inventory Id</h4>
+    <input type="text" id="existingInventoryId"/>
+    <br/><br/>
+    <input type="button" id="getButton" value="Get Inventory"/>
+    <input type="button" id="deleteButton" value="Delete Inventory"/>
+</form>
+<hr/>
+<h3>List Inventory</h3>
+<form>
+    <input type="button" id="listButton" value="List Inventory"/>
+</form>
+<hr/>
+<h3>Output</h3>
+<div id="outputDiv">No operations have been executed so far.</div>
+<script language="JavaScript">
+    function getCreateUpdateParams() {
+        const requestParams = [];
+        const inventoryId = document.getElementById("inventoryId").value;
+        const itemName = document.getElementById("itemName").value;
+        const itemQuantity = document.getElementById("itemQuantity").value;
+        const warehouseId = document.getElementById("warehouseId").value;
+        if (inventoryId != null && inventoryId != "") {
+            requestParams.push("inventoryId=" + inventoryId);
+        }
+        if (itemName != null && itemName != "") {
+            requestParams.push("itemName=" + itemName);
+        }
+        if (itemQuantity != null && itemQuantity != "") {
+            requestParams.push("itemQuantity=" + inventoryId);
+        }
+        if (warehouseId != null && warehouseId != "") {
+            requestParams.push("warehouseId=" + warehouseId);
+        }
+
+        return requestParams.join("&");
+    }
+    function getDeleteGetParams() {
+        const inventoryId = document.getElementById("existingInventoryId").value;
+        return "inventoryId=" + inventoryId;
+    }
+    document.getElementById("createButton").addEventListener("click", function() {
+        const http = new XMLHttpRequest();
+        const url='/inventory/create?' + getCreateUpdateParams();
+        http.open('POST', url);
+        http.onload = function () {
+            document.getElementById("outputDiv").innerHTML = this.responseText;
+        };
+        http.send();
+    });
+    document.getElementById("updateButton").addEventListener("click", function() {
+        const http = new XMLHttpRequest();
+        const url='/inventory/update?' + getCreateUpdateParams();
+        http.open('POST', url);
+        http.onload = function () {
+            document.getElementById("outputDiv").innerHTML = this.responseText;
+        };
+        http.send();
+    });
+    document.getElementById("getButton").addEventListener("click", function() {
+        const http = new XMLHttpRequest();
+        const url='/inventory/get?' + getDeleteGetParams();
+        http.open('POST', url);
+        http.onload = function () {
+            document.getElementById("outputDiv").innerHTML = this.responseText;
+        };
+        http.send();
+    });
+    document.getElementById("deleteButton").addEventListener("click", function() {
+        const http = new XMLHttpRequest();
+        const url='/inventory/delete?' + getDeleteGetParams();
+        http.open('POST', url);
+        http.onload = function () {
+            document.getElementById("outputDiv").innerHTML = this.responseText;
+        };
+        http.send();
+    });
+    document.getElementById("listButton").addEventListener("click", function() {
+        const http = new XMLHttpRequest();
+        const url='/inventory/list';
+        http.open('POST', url);
+        http.onload = function () {
+            document.getElementById("outputDiv").innerHTML = this.responseText;
+        };
+        http.send();
+    });
+</script>
+</body>
+</html>

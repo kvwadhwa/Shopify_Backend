@@ -1,0 +1,100 @@
+<html>
+<head>
+    <title>Warehouse Console</title>
+</head>
+<body>
+
+<h3>Create/Update Warehouse</h3>
+<form>
+    <h4>Warehouse Id</h4>
+    <input type="text" id="warehouseId"/>
+    <h4>Warehouse Location</h4>
+    <input type="text" id="warehouseLocation"/>
+    <br/><br/>
+    <input type="button" id="createButton" value="Create Warehouse"/>
+    <input type="button" id="updateButton" value="Update Warehouse"/>
+</form>
+<hr/>
+
+<h3>Get/Delete Warehouse</h3>
+<form>
+    <h4>Warehouse Id</h4>
+    <input type="text" id="existingWarehouseId"/>
+    <br/><br/>
+    <input type="button" id="getButton" value="Get Warehouse"/>
+    <input type="button" id="deleteButton" value="Delete Warehouse"/>
+</form>
+<hr/>
+<h3>List Warehouses</h3>
+<form>
+    <input type="button" id="listButton" value="List Warehouses"/>
+</form>
+<hr/>
+<h3>Output</h3>
+<div id="outputDiv">No operations have been executed so far.</div>
+<script language="JavaScript">
+    function getCreateUpdateParams() {
+        const requestParams = [];
+        const warehouseId = document.getElementById("warehouseId").value;
+        const warehouseLocation = document.getElementById("warehouseLocation").value;
+        if (warehouseId != null && warehouseId != "") {
+            requestParams.push("warehouseId=" + warehouseId);
+        }
+        if (warehouseLocation != null && warehouseLocation != "") {
+            requestParams.push("warehouseLocation=" + warehouseLocation);
+        }
+
+        return requestParams.join("&");
+    }
+    function getDeleteGetParams() {
+        const warehouseId = document.getElementById("existingWarehouseId").value;
+        return "warehouseId=" + warehouseId;
+    }
+    document.getElementById("createButton").addEventListener("click", function() {
+        const http = new XMLHttpRequest();
+        const url='/warehouse/create?' + getCreateUpdateParams();
+        http.open('POST', url);
+        http.onload = function () {
+            document.getElementById("outputDiv").innerHTML = this.responseText;
+        };
+        http.send();
+    });
+    document.getElementById("updateButton").addEventListener("click", function() {
+        const http = new XMLHttpRequest();
+        const url='/warehouse/update?' + getCreateUpdateParams();
+        http.open('POST', url);
+        http.onload = function () {
+            document.getElementById("outputDiv").innerHTML = this.responseText;
+        };
+        http.send();
+    });
+    document.getElementById("getButton").addEventListener("click", function() {
+        const http = new XMLHttpRequest();
+        const url='/warehouse/get?' + getDeleteGetParams();
+        http.open('POST', url);
+        http.onload = function () {
+            document.getElementById("outputDiv").innerHTML = this.responseText;
+        };
+        http.send();
+    });
+    document.getElementById("deleteButton").addEventListener("click", function() {
+        const http = new XMLHttpRequest();
+        const url='/warehouse/delete?' + getDeleteGetParams();
+        http.open('POST', url);
+        http.onload = function () {
+            document.getElementById("outputDiv").innerHTML = this.responseText;
+        };
+        http.send();
+    });
+    document.getElementById("listButton").addEventListener("click", function() {
+        const http = new XMLHttpRequest();
+        const url='/warehouse/list';
+        http.open('POST', url);
+        http.onload = function () {
+            document.getElementById("outputDiv").innerHTML = this.responseText;
+        };
+        http.send();
+    });
+</script>
+</body>
+</html>
